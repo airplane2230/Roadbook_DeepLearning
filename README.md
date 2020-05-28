@@ -1,8 +1,8 @@
-# keras_with_tf2.0
+# 백견불여일타 딥러닝 입문서
 
 백견불여일타 딥러닝 코드 저장소입니다.  
 
-저자: 조휘용  
+저자: 조휘용
 저자 블로그: https://hwiyong.tistory.com/  
 
 출판사: (주)로드북(https://roadbook.co.kr/)  
