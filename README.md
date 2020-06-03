@@ -2,7 +2,7 @@
 
 백견불여일타 딥러닝 코드 저장소입니다.
 
-<img src="https://github.com/airplane2230/Roadbook_deeplearning/tree/master/images/book_main.png" />
+<img src="https://github.com/airplane2230/Roadbook_deeplearning/tree/master/images/main.PNG" />
 
 ### 저자 및 출판사 소개
 
