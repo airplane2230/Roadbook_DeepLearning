@@ -24,6 +24,6 @@
 - solutions : '실습해봅시다'의 해결 방법이 있습니다.
 
 ### 동작 버전 확인
-- (출간) TensorFlow 2.0, 2.1을 통한 original code 작성
-- (--) TensorFlow 2.3
-- (--) TensorFlow 2.4
+- (출간) TensorFlow 2.0v, 2.1v을 통한 original code 작성
+- (--) TensorFlow 2.3v
+- (--) TensorFlow 2.4v
