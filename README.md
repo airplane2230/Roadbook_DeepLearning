@@ -26,4 +26,4 @@
 ### 동작 버전 확인
 - (출간) TensorFlow 2.0v, 2.1v을 통한 original code 작성
 - (Ok) TensorFlow 2.3v
-- (--) TensorFlow 2.4v
+- (Ok) TensorFlow 2.4v
