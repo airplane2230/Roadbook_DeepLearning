@@ -67,10 +67,11 @@ model = get_model()
 # hyperparameter
 init_epoch = 1
 EPOCHS = 1000
-warmup_epoch = int(EPOCHS * 0.3)
+warmup_epoch = int(EPOCHS * 0.1)
 init_lr = 0.1
 min_lr = 1e-6
 power = 1.
+isSchedule = True
 
 lr_scheduler = tf.keras.optimizers.schedules.PolynomialDecay(
     initial_learning_rate = init_lr,
@@ -79,12 +80,16 @@ lr_scheduler = tf.keras.optimizers.schedules.PolynomialDecay(
     power = power
 )
 
-optimizer = tf.keras.optimizers.Adam(learning_rate = LRSchedule(init_lr,
+
+if isSchedule:
+    optimizer = tf.keras.optimizers.Adam(learning_rate = LRSchedule(init_lr,
                                                                 warmup_epoch=warmup_epoch,
                                                                 decay_fn=lr_scheduler
                                                                 ))
+else:
+    optimizer = tf.keras.optimizers.Adam()
 
-init_path = './model/' # init checkpoint 저장
+init_path = './model/init'
 init_ckpt = tf.train.Checkpoint(model = model, optimizer = optimizer)
 
 init_ckpt_manager = tf.train.CheckpointManager(init_ckpt, init_path, max_to_keep = 10)
@@ -109,7 +114,7 @@ loss_function = tf.keras.losses.CategoricalCrossentropy()
 
 train_accuracy = tf.keras.metrics.CategoricalAccuracy()
 
-ckpt_path = './model/ckpt/' # checkpoint 저장 경로
+ckpt_path = './model/ckpt/'
 ckpt = tf.train.Checkpoint(epoch = tf.Variable(1), loss = tf.Variable(1., dtype = tf.float64),
                            accuracy = tf.Variable(1., dtype = tf.float64),
                            model = model,
@@ -121,6 +126,8 @@ ckpt.restore(ckpt_manager.latest_checkpoint)
 if ckpt_manager.latest_checkpoint:
     print(f'Restored from {ckpt_manager.latest_checkpoint}')
     print(f'epoch: {ckpt.epoch.numpy()}, accuracy: {ckpt.accuracy.numpy()}, loss: {ckpt.loss.numpy()}')
+    
+    init_epoch = ckpt.epoch.numpy()
 else:
     print('Initializing from Scratch')
     
@@ -130,9 +137,10 @@ for epoch in range(init_epoch, EPOCHS):
     
     tqdm_dataset = tqdm(enumerate(train_ds))
     
-    LR_for_print = LRSchedule(init_lr,warmup_epoch=warmup_epoch,decay_fn=lr_scheduler)
-    
-    print('current learning_rate: ', LR_for_print(epoch).numpy())
+    if isSchedule:
+        LR_for_print = LRSchedule(init_lr,warmup_epoch=warmup_epoch,decay_fn=lr_scheduler)
+
+        print('current learning_rate: ', LR_for_print(epoch).numpy())
     
     for (batch, (tensor, target)) in tqdm_dataset:
         batch_loss, predictions = train_step(tensor, target, training = True)
@@ -142,15 +150,15 @@ for epoch in range(init_epoch, EPOCHS):
         
         tqdm_dataset.set_postfix({
             'Epoch': epoch,
-            'Loss': '{:06f}'.format(batch_loss.numpy()),
-            'Total Loss': '{:06f}'.format(total_loss_format),
-            'Accuracy': '{:04f}'.format(train_accuracy.result().numpy())
+            'Loss': '{:.4f}'.format(batch_loss.numpy()),
+            'Total Loss': '{:.4f}'.format(total_loss_format),
+            'Accuracy': '{:.4f}'.format(train_accuracy.result().numpy())
         })
         
     loss_plot.append(total_loss_format)
     
     if np.min(loss_plot) == loss_plot[-1]:
-        print(f'{epoch} - min Loss!: {loss_plot[-1]}, and Accuracy: {train_accuracy.result().numpy()}')
+        print(f'{epoch} - loss: {loss_plot[-1]:.4f} - accuracy: {train_accuracy.result().numpy():.4f}')
         ckpt.epoch.assign(epoch)
         ckpt.accuracy.assign(train_accuracy.result().numpy())
         ckpt.loss.assign(total_loss_format)
