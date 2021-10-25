@@ -6,19 +6,13 @@ class LRSchedule(tf.keras.optimizers.schedules.LearningRateSchedule):
                  continue_epoch = 1
                  ):
         self.init_lr = init_lr
+        self.lr = init_lr
+        
         self.decay_fn = decay_fn
+        
         self.warmup_epoch = warmup_epoch
         self.steps_per_epoch = steps_per_epoch
         self.continue_epoch = continue_epoch
-        self.lr = 1e-4
-        
-    def get_config(self):
-        # not working
-        config = {
-            'learning_rate': self.lr
-        }
-        
-        return config
     
     # No Override
     def on_epoch_begin(self, epoch, logs = None):
