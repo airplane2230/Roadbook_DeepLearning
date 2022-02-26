@@ -1,7 +1,7 @@
 ﻿# 백견불여일타 딥러닝 입문 with 텐서플로우 2.x
 
-백견불여일타 딥러닝 코드 저장소입니다.  
-텐서플로우와 케라스를 활용한 각종 입문 예제가 포함되어 있습니다.
+백견불여일타 딥러닝 입문 with 텐서플로우 2.x 코드 저장소입니다.  
+텐서플로우를 활용한 다양한 실습 예제가 포함되어 있습니다.
 
 ![Main](./images/main.PNG)
 
@@ -27,3 +27,4 @@
 - (출간) TensorFlow 2.0v, 2.1v을 통한 original code 작성
 - (Ok) TensorFlow 2.3v
 - (Ok) TensorFlow 2.4v
+- (Ok) TensorFlow 2.5v
