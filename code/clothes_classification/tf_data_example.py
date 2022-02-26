@@ -1,10 +1,10 @@
 import tensorflow as tf
 import pandas as pd
 
-from model.model import get_model
+from model.modeling import get_model
 
 # 데이터를 불러오고, Dataset 객체를 만듭니다.
-train_df = pd.read_csv("./train.csv")
+train_df = pd.read_csv("./csv_data/nocolorinfo/train.csv")
 train_slices = tf.data.Dataset.from_tensor_slices(dict(train_df))
 
 # {image, black, blue, ...}
